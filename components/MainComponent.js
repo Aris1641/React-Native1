@@ -148,7 +148,7 @@ const CustomDrawerContentComponent = (props) => (
       <View style={styles.drawerHeader}>
         <View style={{ flex: 1 }}>
           <Image
-            source={required("./images/logo.png")}
+            source={require("./images/logo.png")}
             style={styles.drawerImage}
           />
         </View>
@@ -217,10 +217,10 @@ const AppNavigator = createAppContainer(MainNavigator);
 
 class Main extends Component {
   componentDidMount() {
-    this.props.fetchCampsites(),
-      this.props.fetchComments(),
-      this.props.fetchPromotions(),
-      this.props.fetchPartners();
+    this.props.fetchCampsites()
+      this.props.fetchComments()
+      this.props.fetchPromotions()
+      this.props.fetchPartners()
   }
 
   render() {
