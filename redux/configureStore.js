@@ -1,4 +1,4 @@
-import { createStore, combineReducers, applyMiddleware } from "redux";
+import { createStore, applyMiddleware } from "redux";
 import thunk from "redux-thunk";
 import logger from "redux-logger";
 import { campsites } from "./campsites";
@@ -17,7 +17,7 @@ const config = {
 
 export const ConfigureStore = () => {
   const store = createStore(
-    persistCombineReducers(config,{
+    persistCombineReducers(config, {
       campsites,
       comments,
       partners,
