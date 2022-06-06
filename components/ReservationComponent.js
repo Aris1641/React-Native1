@@ -20,7 +20,8 @@ class Reservation extends Component {
     this.state = {
       campers: 1,
       hikeIn: false,
-      date: "",
+      date: new Date(),
+      showCalander: false
     };
   }
 
@@ -39,11 +40,10 @@ class Reservation extends Component {
       [
         {
           text: "Cancel",
-          onPress: () => {
-            console.log("Reservation Search Canceled");
-            this.resetForm();
-          },
-          style: "cancel",
+          onPress: () => this.resetForm(),
+            style: "cancel"
+          
+          
         },
         {
           text: "OK",
@@ -63,7 +63,8 @@ class Reservation extends Component {
     this.setState({
       campers: 1,
       hikeIn: false,
-      date: "",
+      date: new Date(),
+      showCalander: false
     });
   }
   async presentLocalNotification(date) {
