@@ -1,176 +1,180 @@
-import React, { Component } from "react";
-import { View, Button, StyleSheet, Image } from "react-native";
-import { Input, CheckBox, Button, Icon } from "react-native-elements";
-import * as SecureStore from "expo-secure-store";
-import * as ImagePicker from "expo-image-picker";
-import * as Permissions from "expo-permissions";
-import { createBottomTabNavigator } from "react-navigation-tabs";
-import { baseUrl } from "../shared/baseUrl";
-import { ScrollView } from "react-native-gesture-handler";
+import React, { Component } from 'react';
+import { View, StyleSheet, ScrollView, Image } from 'react-native';
+import { Input, CheckBox, Button, Icon } from 'react-native-elements';
+import * as SecureStore from 'expo-secure-store';
+import * as ImagePicker from 'expo-image-picker';
+import * as Permissions from 'expo-permissions';
+import { createBottomTabNavigator } from 'react-navigation-tabs';
+import { baseUrl } from '../shared/baseUrl';
 
 class LoginTab extends Component {
-  constructor(props) {
-    super(props);
 
-    this.state = {
-      username: "",
-      password: "",
-      remember: false,
-    };
-  }
+    constructor(props) {
+        super(props);
 
-  static navigationOptions = {
-    title: "Login",
-  };
-
-  handleLogin() {
-    console.log(JSON.stringify(this.state));
-    if (this.state.remember) {
-      SecureStore.setItemAsync(
-        "userinfo",
-        JSON.stringify({
-          username: this.state.username,
-          password: this.state.password,
-        })
-      ).catch((error) => console.log("Could not save user info", error));
-    } else {
-      SecureStore.deleteItemAsync("userinfo").catch((error) =>
-        console.log("Could not delete user info", error)
-      );
+        this.state = {
+            username: '',
+            password: '',
+            remember: false
+        };
     }
-  }
 
-  componentDidMount() {
-    SecureStore.getItemAsync("userinfo").then((userdata) => {
-      const userinfo = JSON.parse(userdata);
-      if (userinfo) {
-        this.setState({ username: userinfo.username });
-        this.setState({ password: userinfo.password });
-        this.setState({ remember: true });
-      }
-    });
-  }
+    static navigationOptions = {
+        title: 'Login',
+        tabBarIcon: ({tintColor}) => (
+            <Icon
+                name='sign-in'
+                type='font-awesome'
+                iconStyle={{color: tintColor}}
+            />
+        )
+    }
 
-  render() {
-    return (
-      <View style={styles.container}>
-        <Input
-          placeholder="Username"
-          leftIcon={{ type: "font-awesome", name: "user-o" }}
-          onChangeText={(username) => this.setState({ username })}
-          value={this.state.username}
-          containerStyle={styles.formInput}
-          leftIconContainerStyle={styles.formIcon}
-        />
-        <Input
-          placeholder="Password"
-          leftIcon={{ type: "font-awesome", name: "key" }}
-          onChangeText={(password) => this.setState({ password })}
-          value={this.state.password}
-          containerStyle={styles.formInput}
-          leftIconContainerStyle={styles.formIcon}
-        />
-        <CheckBox
-          title="Remember Me"
-          center
-          checked={this.state.remember}
-          onPress={() => this.setState({ remember: !this.state.remember })}
-          containerStyle={styles.formCheckbox}
-        />
-        <View style={styles.formButton}>
-          <Button
-            onPress={() => this.handleLogin()}
-            title="Login"
-            icon={
-              <Icon
-                name="sign-in"
-                type="font-awesome"
-                color="#fff"
-                iconStyle={{ marginRight: 10 }}
-              />
-            }
-            buttonStyle={{ backgroundColor: "#5367DD" }}
-          />
-        </View>
-        <View style={styles.formButton}>
-          <Button
-            onPress={() => this.props.navigation.navigate("Register")}
-            title="Register"
-            type="clear"
-            icon={
-              <Icon
-                name="user-plus"
-                type="font-awesome"
-                color="blue"
-                iconStyle={{ marginRight: 10 }}
-              />
-            }
-            titleStyle={{ color: "blue" }}
-          />
-        </View>
-      </View>
-    );
-  }
+    handleLogin() {
+        console.log(JSON.stringify(this.state));
+        if (this.state.remember) {
+            SecureStore.setItemAsync(
+                'userinfo',
+                JSON.stringify({
+                    username: this.state.username,
+                    password: this.state.password
+                })
+            ).catch(error => console.log('Could not save user info', error));
+        } else {
+            SecureStore.deleteItemAsync('userinfo').catch(
+                error => console.log('Could not delete user info', error)
+            );
+        }
+    }
+
+    componentDidMount() {
+        SecureStore.getItemAsync('userinfo')
+            .then(userdata => {
+                const userinfo = JSON.parse(userdata);
+                if (userinfo) {
+                    this.setState({username: userinfo.username});
+                    this.setState({password: userinfo.password});
+                    this.setState({remember: true})
+                }
+            });
+    }
+
+    render() {
+        return (
+            <View style={styles.container}>
+                <Input
+                    placeholder='Username'
+                    leftIcon={{type: 'font-awesome', name: 'user-o'}}
+                    onChangeText={username => this.setState({username})}
+                    value={this.state.username}
+                    containerStyle={styles.formInput}
+                    leftIconContainerStyle={styles.formIcon}
+                />
+                <Input
+                    placeholder='Password'
+                    leftIcon={{type: 'font-awesome', name: 'key'}}
+                    onChangeText={password => this.setState({password})}
+                    value={this.state.password}
+                    containerStyle={styles.formInput}
+                    leftIconContainerStyle={styles.formIcon}
+                />
+                <CheckBox
+                    title='Remember Me'
+                    center
+                    checked={this.state.remember}
+                    onPress={() => this.setState({remember: !this.state.remember})}
+                    containerStyle={styles.formCheckbox}
+                />
+                <View style={styles.formButton}>
+                    <Button
+                        onPress={() => this.handleLogin()}
+                        title='Login'
+                        icon={
+                            <Icon
+                                name='sign-in'
+                                type='font-awesome'
+                                color='#fff'
+                                iconStyle={{marginRight: 10}}
+                            />
+                        }
+                        buttonStyle={{backgroundColor: '#5637DD'}}
+                    />
+                </View>
+                <View style={styles.formButton}>
+                    <Button
+                        onPress={() => this.props.navigation.navigate('Register')}
+                        title='Register'
+                        type='clear'
+                        icon={
+                            <Icon
+                                name='user-plus'
+                                type='font-awesome'
+                                color='blue'
+                                iconStyle={{marginRight: 10}}
+                            />
+                        }
+                        titleStyle={{color: 'blue'}}
+                    />
+                </View>
+            </View>
+        );
+    }
 }
 
 class RegisterTab extends Component {
-  constructor(props) {
-    super(props);
 
-    this.state = {
-      username: "",
-      password: "",
-      firstname: "",
-      lastname: "",
-      email: "",
-      remember: false,
-      imageUrl: baseUrl + "images/logo.png",
-    };
-  }
+    constructor(props) {
+        super(props);
 
-  static navigationOptions = {
-    title: "Register",
-    tabBarIcon: ({ tintColor }) => (
-      <Icon
-        name="user-plus"
-        type="font-awesome"
-        iconStyle={{ color: tinitColor }}
-      />
-    ),
-  };
-
-  getImageFromCamera = async () => {
-    const cameraPermission = await Permissions.askAsync(Permissions.CAMERA);
-    const camerRollPermission = await Permissions.askAsync(
-      Permissions.CAMERA_ROLL
-    );
-
-    if (
-      cameraPermission.status === "granted" &&
-      camerRollPermission.status === "granted"
-    ) {
-      const capturedImage = await ImagePicker.launchCameraAsync({
-        allowsEditing: true,
-        aspect: [1, 1],
-      });
-      if (!capturedImage.cancelled) {
-        console.log(capturedImage);
-        this.setState({ imageUrl: capturedImage });
-      }
+        this.state = {
+            username: '',
+            password: '',
+            firstname: '',
+            lastname: '',
+            email: '',
+            remember: false,
+            imageUrl: baseUrl + 'images/logo.png'
+        };
     }
-  };
 
-handleRegister() {
-    console.log(JSON.stringify(this.state));
-    if (this.state.remember) {
-        SecureStore.setItemAsync('userinfo', JSON.stringify(
-            {username: this.state.username, password: this.state.password}
-        ))
-        .catch(error => console.log("Could not save user info", error));
-    } else {
-        SecureStore.deleteItemAsync('userinfo').catch(
-            error => console.log('Could not delete user info', error)
-        );
+    static navigationOptions = {
+        title: 'Register',
+        tabBarIcon: ({tintColor}) => (
+            <Icon
+                name='user-plus'
+                type='font-awesome'
+                iconStyle={{color: tintColor}}
+            />
+        )
+    }
+
+    getImageFromCamera = async () => {
+        const cameraPermission = await Permissions.askAsync(Permissions.CAMERA);
+        const cameraRollPermission = await Permissions.askAsync(Permissions.CAMERA_ROLL);
+
+        if (cameraPermission.status === 'granted' && cameraRollPermission.status === 'granted') {
+            const capturedImage = await ImagePicker.launchCameraAsync({
+                allowsEditing: true,
+                aspect: [1, 1]
+            });
+            if (!capturedImage.cancelled) {
+                console.log(capturedImage);
+                this.setState({imageUrl: capturedImage.uri});
+            }
+        }
+    }
+
+    handleRegister() {
+        console.log(JSON.stringify(this.state));
+        if (this.state.remember) {
+            SecureStore.setItemAsync('userinfo', JSON.stringify(
+                {username: this.state.username, password: this.state.password}))
+                .catch(error => console.log('Could not save user info', error));
+        } else {
+            SecureStore.deleteItemAsync('userinfo').catch(
+                error => console.log('Could not delete user info', error)
+            );
+        }
     }
 
     render() {
@@ -254,25 +258,23 @@ handleRegister() {
             </ScrollView>
         );
     }
-} 
-
-  const Login = createBottomTabNavigator (
-      {
-          Login: LoginTab,
-          Register: RegisterTab
-      },{
-      tabBarOptions: {
-          activeBackgroundColor: '#56377DD',
-          inactiveBackgroundColor: '#CEC8FF',
-          activeTintColor: '#fff',
-          inactiveTintColor: '#808080',
-          labelStyle: {fontSize: 16}
-      }
-    }
-  );  
-
-
 }
+
+const Login = createBottomTabNavigator(
+    {
+        Login: LoginTab,
+        Register: RegisterTab
+    },
+    {
+        tabBarOptions: {
+            activeBackgroundColor: '#5637DD',
+            inactiveBackgroundColor: '#CEC8FF',
+            activeTintColor: '#fff',
+            inactiveTintColor: '#808080',
+            labelStyle: {fontSize: 16}
+        }
+    }
+);
 
 const styles = StyleSheet.create({
     container: {
